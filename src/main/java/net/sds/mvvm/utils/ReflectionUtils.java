@@ -60,6 +60,10 @@ public class ReflectionUtils {
       try {
         Optional<Method> method = getMethod(parent.getClass(), path);
         if (method.isPresent()) {
+          // Make this work with Scala:
+          if (method.get().getParameterCount() == 0) {
+            return method.get().invoke(parent);
+          }
           return method.get().invoke(parent, path);
         }
         Optional<Field> field = getField(parent.getClass(), path);
